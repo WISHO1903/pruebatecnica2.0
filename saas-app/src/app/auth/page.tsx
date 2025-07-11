@@ -2,24 +2,31 @@
 
 import { useState } from 'react'
 import { supabase } from '../../../lib/supabase'
+import { useRouter } from 'next/navigation'
 
 export default function AuthPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLogin, setIsLogin] = useState(true)
   const [message, setMessage] = useState('')
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setMessage('')
-    const { error } = isLogin
-      ? await supabase.auth.signInWithPassword({ email, password })
-      : await supabase.auth.signUp({ email, password })
 
-    if (error) {
-      setMessage(error.message)
+    let result
+    if (isLogin) {
+      result = await supabase.auth.signInWithPassword({ email, password })
+    } else {
+      result = await supabase.auth.signUp({ email, password })
+    }
+
+    if (result.error) {
+      setMessage(result.error.message)
     } else {
       setMessage('✅ Operación exitosa')
+      router.push('/dashboard')
     }
   }
 
@@ -33,22 +40,22 @@ export default function AuthPage() {
           {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
         </h1>
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">Correo</label>
+        <label className="block text-sm font-medium text-gray-800 mb-1">Correo</label>
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
         />
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+        <label className="block text-sm font-medium text-gray-800 mb-1">Contraseña</label>
         <input
           type="password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
         />
 
         <button
