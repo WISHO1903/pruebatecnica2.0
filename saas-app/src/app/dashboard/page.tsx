@@ -15,7 +15,7 @@ export default function DashboardPage() {
   const [view, setView] = useState<'welcome' | 'account' | 'add-payment'>('welcome')
   const [cards, setCards] = useState<any[]>([])
 
-  // Verificar sesión
+  // Verificar la sesión actual 
   useEffect(() => {
     if (session === undefined) return
     if (!session) {
@@ -25,7 +25,7 @@ export default function DashboardPage() {
     setLoading(false)
   }, [session, router])
 
-  // Verificar método de pago al cambiar a vista "account"
+  // Verificar método de pago al cambiar a la vista de "account"
   useEffect(() => {
     if (!session || loading || view !== 'account') return
 
@@ -41,9 +41,9 @@ export default function DashboardPage() {
         const data = await res.json()
         setHasPaymentMethod(data.hasPaymentMethod)
         setCards(data.cards || [])
-        console.log('[✅] Método de pago:', data)
+        console.log('Método de pago:', data)
       } catch (err) {
-        console.error('[❌] Error al obtener método de pago:', err)
+        console.error('Error al obtener método de pago:', err)
         setHasPaymentMethod(null)
         setCards([])
       }
@@ -100,7 +100,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* Main content */}
+      {/* Main */}
       <main className="max-w-4xl mx-auto px-4 py-10">
         {view === 'welcome' && (
           <>
@@ -125,11 +125,11 @@ export default function DashboardPage() {
                 <p className="text-gray-500">Verificando método de pago...</p>
               ) : hasPaymentMethod ? (
                 <p className="text-green-600 font-semibold">
-                  ✅ Ya tienes un método de pago registrado.
+                  Ya tienes un método de pago registrado.
                 </p>
               ) : (
                 <p className="text-red-600 font-semibold">
-                  ❌ No tienes ningún método de pago registrado.
+                  No tienes ningún método de pago registrado.
                 </p>
               )}
             </div>
@@ -143,7 +143,7 @@ export default function DashboardPage() {
                     className="p-4 border border-gray-300 rounded-lg bg-white shadow-sm"
                   >
                     <p className="text-sm text-gray-800">
-                      💳 {card.brand?.toUpperCase()} •••• {card.last4}
+                       {card.brand?.toUpperCase()} •••• {card.last4}
                     </p>
                     <p className="text-xs text-gray-500">
                       Expira {card.exp_month}/{card.exp_year}

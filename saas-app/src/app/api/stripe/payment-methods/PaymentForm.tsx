@@ -38,11 +38,11 @@ function CheckoutForm({ user }: { user: any }) {
       })
 
       if (!res.ok) {
-        throw new Error(`❌ Error al obtener SetupIntent (${res.status})`)
+        throw new Error(` Error al obtener SetupIntent (${res.status})`)
       }
 
       const { clientSecret } = await res.json()
-      console.log('[✅] SetupIntent recibido:', clientSecret)
+      console.log('SetupIntent recibido:', clientSecret)
 
       // Paso 2: Confirmar con Stripe
       const result = await stripe?.confirmCardSetup(clientSecret, {
@@ -51,10 +51,10 @@ function CheckoutForm({ user }: { user: any }) {
         },
       })
 
-      console.log('[✅] Resultado Stripe:', result)
+      console.log(' Resultado Stripe:', result)
 
       if (result?.error) {
-        console.error('[❌] Error en confirmCardSetup:', result.error.message)
+        console.error('Error en confirmCardSetup:', result.error.message)
         setMessage(result.error.message || 'Error al guardar método de pago')
         setLoading(false)
         return
@@ -69,17 +69,17 @@ function CheckoutForm({ user }: { user: any }) {
         body: JSON.stringify({
           user_id: user.id,
           email: user.email,
-          mensaje: '✅ El usuario ha guardado un método de pago exitosamente',
+          mensaje: 'El usuario ha guardado un método de pago exitosamente',
         }),
       })
 
-      setMessage('✅ Método de pago guardado')
+      setMessage('Método de pago guardado')
     } catch (err: any) {
-      console.error('[❌] Error inesperado:', err.message || err)
+      console.error('Error inesperado:', err.message || err)
       setMessage('Error inesperado: ' + (err.message || ''))
     } finally {
       setLoading(false)
-      console.log('[🔚] Finalizó proceso')
+      console.log(' Finalizó proceso')
     }
   }
 
@@ -90,13 +90,13 @@ function CheckoutForm({ user }: { user: any }) {
     >
       <h2 className="text-xl font-bold text-gray-800 mb-4">Guardar Método de Pago</h2>
 
-      {/* ✅ Datos básicos del usuario */}
+      {/*Datos básicos del usuario */}
       <div className="mb-4 text-sm text-gray-700">
         <p><strong>ID:</strong> {user.id}</p>
         <p><strong>Email:</strong> {user.email}</p>
       </div>
 
-      {/* ✅ Para debug opcional: mostrar todo el objeto */}
+      {/* Para debug opcional: mostrar todo el objeto */}
       {/* <pre className="bg-gray-100 text-xs p-2 rounded overflow-x-auto mb-4">
         {JSON.stringify(user, null, 2)}
       </pre> */}

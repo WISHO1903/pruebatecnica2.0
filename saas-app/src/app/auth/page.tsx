@@ -25,7 +25,7 @@ export default function AuthPage() {
     if (result.error) {
       setMessage(result.error.message)
     } else {
-      setMessage('✅ Operación exitosa')
+      setMessage('Operación exitosa')
       router.push('/dashboard')
     }
   }
